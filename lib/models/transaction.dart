@@ -10,11 +10,7 @@ class Transaction{
       this.timestamp);
 
   static getDummyTransactions(){
-    return [
-      // new Transaction(),
-      // new Transaction(),
-      // new Transaction(),
-    ];
+    return [];
   }
 }
 

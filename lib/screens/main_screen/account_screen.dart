@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grape/models/account.dart';
 
@@ -56,8 +57,8 @@ class _AccountPageState extends State<AccountPage> {
                     // color: Theme.of(context).primaryColor,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(20),
-                            bottomRight: Radius.circular(20)),
+                            bottomLeft: Radius.circular(25),
+                            bottomRight: Radius.circular(25)),
                         color: Theme.of(context).primaryColor),
                   ),
                   Positioned.fill(
@@ -80,6 +81,8 @@ class _AccountPageState extends State<AccountPage> {
               ),
             ),
           ),
+          Text("hello", style: Theme.of(context).textTheme.bodyText1,),
+
           // Image.network(user.pfpUrl),
           // Spacer(flex: 1),
 
