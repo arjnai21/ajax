@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.grape.grape">
+    package="com.ajax.ajax">
    <application
-        android:label="grape"
+        android:label="ajax"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,6 +1,8 @@
+import 'package:ajax/screens/payment_screens/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:grape/models/account.dart';
+import 'package:ajax/models/account.dart';
+import 'package:ajax/models/transaction.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   int _counter = 0;
   Account user = Account.getDummyAccount();
+  final List<Transaction> transactions =Transaction.getDummyTransactions();
 
   void _incrementCounter() {
     setState(() {
@@ -26,6 +29,7 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   Widget build(BuildContext context) {
+
     return Center(
       // Center is a layout widget. It takes a single child and positions it
       // in the middle of the parent.
@@ -44,44 +48,67 @@ class _AccountPageState extends State<AccountPage> {
         // center the children vertically; the main axis here is the vertical
         // axis because Columns are vertical (the cross axis would be
         // horizontal).
-        mainAxisAlignment: MainAxisAlignment.center,
+        // mainAxisAlignment: MainAxisAlignment.spaceA,
+        // crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Flexible(
-            child: SizedBox.expand(
-              child: FractionallySizedBox(
-                alignment: Alignment.topCenter,
-                widthFactor: 1,
-                heightFactor: .5,
-                child: Stack(children: [
-                  Container(
-                    // color: Theme.of(context).primaryColor,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.only(
-                            bottomLeft: Radius.circular(25),
-                            bottomRight: Radius.circular(25)),
-                        color: Theme.of(context).primaryColor),
-                  ),
-                  Positioned.fill(
-                    top: 45,
-                    child: Column(
-                      children: [
-                        Align(
-                          child: CircleAvatar(
-                            radius: 100,
-                            backgroundImage: NetworkImage(user.pfpUrl),
-                          ),
-                        ),
-                        SizedBox(height: 23),
-                        Text("\$" + user.balance.toString(),
-                          style: Theme.of(context).textTheme.headline3 ,)
-                      ],
+          Stack(children: [
+            Container(
+              height: MediaQuery.of(context).size.height * .45, //constraints.maxHeight * .5,
+
+              // color: Theme.of(context).primaryColor,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(25),
+                      bottomRight: Radius.circular(25)),
+                  color: Theme.of(context).primaryColor),
+            ),
+            Positioned.fill(
+              top: 45,
+              child: Column(
+                children: [
+                  Align(
+                    child: CircleAvatar(
+                      radius: 100,
+                      backgroundImage: NetworkImage(user.pfpUrl),
                     ),
                   ),
-                ]),
+                  SizedBox(height: 23),
+                  Text(
+                    "\$" + user.balance.toString(),
+                    style: Theme.of(context).textTheme.headline3,
+                  )
+                ],
               ),
             ),
+          ]),
+          SizedBox(height: 10,),
+
+
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Transactions",
+              style: Theme.of(context).textTheme.headline6,
+
+            ),
           ),
-          Text("hello", style: Theme.of(context).textTheme.bodyText1,),
+          SizedBox(height: 3,),
+
+          // Padding(padding: EdgeInsets.all(5)),
+          Expanded(
+            child: ListView.builder(
+              itemCount: transactions.length,
+              itemBuilder: (BuildContext context, int index){
+                return InkWell(
+                  child: Card(
+                    color: Theme.of(context).accentColor,
+                    child: Text(transactions[index].message, style: Theme.of(context).textTheme.subtitle1,),
+                  ),
+                );
+              },
+            ),
+          ),
+
 
           // Image.network(user.pfpUrl),
           // Spacer(flex: 1),
@@ -94,10 +121,15 @@ class _AccountPageState extends State<AccountPage> {
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 60, right: 20),
                   child: SizedBox(
-                    width: double.infinity,
+                    // width: double.infinity,
                     child: ElevatedButton(
+
                       onPressed: () {
                         print("button pressed");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => PaymentScreen()),
+                        );
                       },
                       child: Text("Pay or Request"),
                       style: ElevatedButton.styleFrom(

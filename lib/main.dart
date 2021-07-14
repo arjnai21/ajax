@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:grape/screens/home_page.dart';
+import 'package:ajax/screens/home_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
-  runApp(MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(App());
 }
 
-class MyApp extends StatelessWidget {
+class App extends StatefulWidget{
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+
+  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -23,23 +32,39 @@ class MyApp extends StatelessWidget {
       800: Color.fromRGBO(136,14,79, .9),
       900: Color.fromRGBO(136,14,79, 1),
     };
+    return FutureBuilder(
+      future: _initialization,
+      builder: (context, snapshot){
+        if(snapshot.hasError){
+          print("error");
+          throw("wasnt able to initialize firebase");
+        }
 
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: MaterialColor(0xFF333333, color),
-        accentColor: Color.fromRGBO(164, 19, 220, 1.0),
-        scaffoldBackgroundColor: const Color(111111),
-        textTheme: TextTheme(
-          bodyText1: TextStyle(color: Colors.white),
-          headline3: TextStyle(color: Colors.white, fontFamily: "Roboto"),
-          subtitle1: TextStyle(color: Colors.white, fontFamily: "Roboto"),
-        )
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-      debugShowCheckedModeBanner: false,
+        else if(snapshot.connectionState == ConnectionState.done){
+          return  MaterialApp(
+            title: 'ajax',
+            theme: ThemeData(
+                primarySwatch: MaterialColor(0xFF333333, color),
+                accentColor: Color.fromRGBO(164, 19, 220, 1.0),
+                scaffoldBackgroundColor: const Color(111111),
+                textTheme: TextTheme(
+                  headline6: TextStyle(color: Colors.white, fontFamily: "Roboto", decoration: TextDecoration.underline, decorationColor: Colors.white),
+                  bodyText1: TextStyle(color: Colors.white),
+                  headline3: TextStyle(color: Colors.white, fontFamily: "Roboto"),
+                  subtitle1: TextStyle(color: Colors.white, fontFamily: "Roboto"),
+                )
+            ),
+            home: MyHomePage(title: 'ajax'),
+            debugShowCheckedModeBanner: false,
 
+          );
+        }
+        else{
+          return CircularProgressIndicator();
+        }
+      },
     );
+
   }
 }
 

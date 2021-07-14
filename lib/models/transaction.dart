@@ -10,7 +10,12 @@ class Transaction{
       this.timestamp);
 
   static getDummyTransactions(){
-    return [];
+    return [
+      Transaction("Arjun", "Wilbert", 200, "hello", DateTime.utc(1969, 7, 20, 20, 18, 04)),
+      Transaction("Arjun", "Wilbert", 200, "hello", DateTime.utc(1969, 7, 20, 20, 18, 04)),
+      Transaction("Arjun", "Wilbert", 200, "hello", DateTime.utc(1969, 7, 20, 20, 18, 04)),
+
+    ];
   }
 }
 
