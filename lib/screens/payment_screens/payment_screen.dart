@@ -117,6 +117,8 @@ class SendMoneyFormState extends State<SendMoneyForm> {
                 // you'd often call a server or save the information in a database.
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('Processing Data')));
+                Navigator.pop(context);
+
               }
             },
             child: Text('Submit'),

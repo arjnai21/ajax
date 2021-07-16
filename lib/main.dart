@@ -1,3 +1,5 @@
+// @dart=2.9
+// ^ to avoid strange null safety issues that I don't really understand but should probably look into
 import 'package:flutter/material.dart';
 import 'package:ajax/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -54,7 +56,7 @@ class _AppState extends State<App> {
                   subtitle1: TextStyle(color: Colors.white, fontFamily: "Roboto"),
                 )
             ),
-            home: MyHomePage(title: 'ajax'),
+            home: HomePage(title: 'ajax'),
             debugShowCheckedModeBanner: false,
 
           );
