@@ -1,11 +1,14 @@
 // @dart=2.9
 // ^ to avoid strange null safety issues that I don't really understand but should probably look into
+import 'package:ajax/login.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(App());
 }
 
@@ -56,7 +59,7 @@ class _AppState extends State<App> {
                   subtitle1: TextStyle(color: Colors.white, fontFamily: "Roboto"),
                 )
             ),
-            home: HomePage(title: 'ajax'),
+            home: _handleWindowDisplay(),
             debugShowCheckedModeBanner: false,
 
           );
@@ -70,3 +73,25 @@ class _AppState extends State<App> {
   }
 }
 
+//TODO check if this works because the behavior is kinda questionable. i believe if the device as your google account on it it will
+// TODO automatically log you in
+Widget _handleWindowDisplay() {
+  User user = FirebaseAuth.instance.currentUser;
+  if(user!=null){
+    print(user.displayName);
+    return HomePage(user: user);
+  }
+  return LoginPage();
+  // return FutureBuilder(
+  //   future: FirebaseAuth.instance.currentUser,
+  //   builder: (context, snapshot) {
+  //     if (snapshot.connectionState == ConnectionState.waiting) {
+  //       return Scaffold(body: Center(child: LinearProgressIndicator()));
+  //     } else if (snapshot.hasData && snapshot.data != null) {
+  //       return HomePage(snapshot.data); // clean and elegant solution
+  //     } else {
+  //       return LoginPage();
+  //     }
+  //   },
+  // );
+}
