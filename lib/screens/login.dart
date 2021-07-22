@@ -2,7 +2,7 @@ import 'package:ajax/screens/home_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:hello_world/myHomePage.dart';
-import 'auth.dart';
+import '../services/auth.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -31,6 +31,7 @@ class _BodyState extends State<Body> {
       Navigator.push(context,
           MaterialPageRoute(builder: (context) => HomePage(user: user,)))
     });
+
   }
 
   Widget googleLoginButton() {

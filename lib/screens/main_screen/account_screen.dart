@@ -1,11 +1,13 @@
 import 'package:ajax/screens/payment_screens/payment_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:ajax/models/account.dart';
+import 'package:ajax/models/user.dart';
 import 'package:ajax/models/transaction.dart';
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  const AccountPage({Key? key, required this.user}) : super(key: key);
+
+  final AjaxUser user;
 
   @override
   _AccountPageState createState() => _AccountPageState();
@@ -13,8 +15,15 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   int _counter = 0;
-  Account user = Account.getDummyAccount();
+  late AjaxUser user = widget.user;
   final List<Transaction> transactions =Transaction.getDummyTransactions();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // user = widget.user;
+  }
 
   void _incrementCounter() {
     setState(() {

@@ -1,3 +1,5 @@
+import 'package:ajax/models/user.dart';
+import 'package:ajax/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/screens/main_screen/account_screen.dart';
@@ -24,7 +26,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late Future<AjaxUser> _user;
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _user = FirestoreService.getUserByUid(widget.user.uid);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +49,21 @@ class _HomePageState extends State<HomePage> {
       // appBar: AppBar(
       //   title: Text(widget.title),
       // ),
-      body: AccountPage(),
+      body: FutureBuilder<AjaxUser>(
+        future: FirestoreService.getUserByUid(widget.user.uid),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print("error");
+            throw ("wasnt able to initialize firebase");
+          } else if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            return AccountPage(user: snapshot.data!);
+          } else {
+            return CircularProgressIndicator();
+          }
+        },
+      ),
+
       // floatingActionButton: FloatingActionButton(
       //   onPressed: _incrementCounter,
       //   tooltip: 'Increment',

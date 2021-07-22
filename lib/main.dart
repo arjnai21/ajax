@@ -1,13 +1,19 @@
 // @dart=2.9
 // ^ to avoid strange null safety issues that I don't really understand but should probably look into
-import 'package:ajax/login.dart';
+import 'package:ajax/models/user.dart';
+import 'package:ajax/screens/login.dart';
+import 'package:ajax/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'services/firestore_service.dart';
+
+import 'services/auth.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
+
 
   runApp(App());
 }
@@ -20,6 +26,7 @@ class App extends StatefulWidget{
 class _AppState extends State<App> {
 
   final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -76,10 +83,12 @@ class _AppState extends State<App> {
 //TODO check if this works because the behavior is kinda questionable. i believe if the device as your google account on it it will
 // TODO automatically log you in
 Widget _handleWindowDisplay() {
-  User user = FirebaseAuth.instance.currentUser;
-  if(user!=null){
-    print(user.displayName);
-    return HomePage(user: user);
+
+  User fireBaseUser = FirebaseAuth.instance.currentUser;
+  if(fireBaseUser!=null){
+    // AjaxUser user = FirestoreService.getUserByUid(user.uid);
+    print(fireBaseUser.displayName);
+    return HomePage(user: fireBaseUser);
   }
   return LoginPage();
   // return FutureBuilder(
