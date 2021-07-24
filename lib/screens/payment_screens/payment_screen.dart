@@ -1,26 +1,37 @@
+import 'package:ajax/models/user.dart';
+import 'package:ajax/services/firestore_service.dart';
 import 'package:flutter/material.dart';
 
 class PaymentScreen extends StatefulWidget {
-  const PaymentScreen({Key? key}) : super(key: key);
+  PaymentScreen({Key? key, required this.user}) : super(key: key);
+
+  final AjaxUser user;
 
   @override
   _PaymentScreenState createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
+
+  late AjaxUser user = widget.user;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
         title: Text("hello"),
       ),
-      body: SendMoneyForm(),
+      body: SendMoneyForm(user: user),
     );
   }
 }
 
 // Define a custom Form widget.
 class SendMoneyForm extends StatefulWidget {
+  SendMoneyForm({Key? key, required this.user}) : super(key: key);
+
+  final AjaxUser user;
+
+
   @override
   SendMoneyFormState createState() {
     return SendMoneyFormState();
@@ -36,6 +47,8 @@ class SendMoneyFormState extends State<SendMoneyForm> {
   // Note: This is a `GlobalKey<FormState>`,
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
+  late AjaxUser user = widget.user;
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +128,7 @@ class SendMoneyFormState extends State<SendMoneyForm> {
               if (_formKey.currentState!.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
                 // you'd often call a server or save the information in a database.
+                FirestoreService.instance.makePayment(user.uid, user.uid, 2);
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('Processing Data')));
                 Navigator.pop(context);

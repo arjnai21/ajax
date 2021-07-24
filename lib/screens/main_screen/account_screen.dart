@@ -1,4 +1,6 @@
 import 'package:ajax/screens/payment_screens/payment_screen.dart';
+import 'package:ajax/services/firestore_service.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/models/user.dart';
@@ -16,19 +18,43 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   int _counter = 0;
   late AjaxUser user = widget.user;
-  final List<Transaction> transactions =Transaction.getDummyTransactions();
+  final List<AjaxTransaction> transactions =AjaxTransaction.getDummyTransactions();
+  // configureListeners();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // user = widget.user;
+    configureListeners();
   }
 
+  void configureListeners(){
+  //  firestore user listener
+    FirebaseFirestore.instance
+        .collection("User")
+        .doc(user.uid)
+        .snapshots()
+        .listen((DocumentSnapshot snapshot) {
+          setState(() {
+            print(snapshot);
+            user=AjaxUser.fromSnapshot(snapshot);
+          });
+    });
+  }
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+  }
+
+  void _getUser(){
+    FirestoreService.instance.getUserByUid(user.uid).then((newUser){
+      setState(() {
+        user = newUser;
+      });
+    });
+
   }
 
   @override
@@ -117,8 +143,8 @@ class _AccountPageState extends State<AccountPage> {
                         print("button pressed");
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => PaymentScreen()),
-                        );
+                          MaterialPageRoute(builder: (context) => PaymentScreen(user: user,)),
+                        ).then((value) => print("wouldve ran get user here"));
                       },
                       child: Text("Pay or Request"),
                       style: ElevatedButton.styleFrom(

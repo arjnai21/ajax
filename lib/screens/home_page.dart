@@ -32,7 +32,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _user = FirestoreService.getUserByUid(widget.user.uid);
+    _user = FirestoreService.instance.getUserByUid(widget.user.uid);
   }
 
   @override
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
       //   title: Text(widget.title),
       // ),
       body: FutureBuilder<AjaxUser>(
-        future: FirestoreService.getUserByUid(widget.user.uid),
+        future: FirestoreService.instance.getUserByUid(widget.user.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             print("error");

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AjaxUser {
@@ -12,6 +13,18 @@ class AjaxUser {
       this.uid, this.username, this.emailAddress, this.balance, this.pfpUrl){
 
   }
+
+  AjaxUser.fromSnapshot(DocumentSnapshot snapshot){
+    // AjaxUser(uid, userData["displayName"], userData["email"], userData["balance"], userData["photoURL"])
+    dynamic userJson = snapshot.data();
+    uid = userJson["uid"];
+    username=userJson["displayName"];
+    emailAddress = userJson["email"];
+    balance = userJson["balance"];
+    pfpUrl = userJson["photoURL"];
+  }
+
+
 
   static getDummyAccount() {
     return AjaxUser("123456", "anair123", "arjun@nairsnet.com", 21.87,
