@@ -27,6 +27,10 @@ class _AccountPageState extends State<AccountPage> {
     super.initState();
     // user = widget.user;
     configureListeners();
+    // print("");
+    // print("");
+    // print("");
+    // print("CALLING INITSTATE");
   }
 
   void configureListeners(){
@@ -36,10 +40,20 @@ class _AccountPageState extends State<AccountPage> {
         .doc(user.uid)
         .snapshots()
         .listen((DocumentSnapshot snapshot) {
-          setState(() {
-            print(snapshot);
-            user=AjaxUser.fromSnapshot(snapshot);
-          });
+          print("document changed");
+          // TODO investigate these shenanigans
+          if(this.mounted){
+            setState(() {
+              // print("trying to set the state");
+              // print(snapshot);
+
+              user=AjaxUser.fromSnapshot(snapshot);
+            });
+          }
+          else{
+            // print("document changed but component not mounted");
+          }
+
     });
   }
   void _incrementCounter() {
@@ -89,7 +103,7 @@ class _AccountPageState extends State<AccountPage> {
                   ),
                   SizedBox(height: 23),
                   Text(
-                    "\$" + user.balance.toString(),
+                    "\$" + user.balance.toStringAsFixed(2),
                     style: Theme.of(context).textTheme.headline3,
                   )
                 ],

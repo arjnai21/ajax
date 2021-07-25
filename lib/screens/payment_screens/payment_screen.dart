@@ -1,6 +1,8 @@
 import 'package:ajax/models/user.dart';
 import 'package:ajax/services/firestore_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class PaymentScreen extends StatefulWidget {
   PaymentScreen({Key? key, required this.user}) : super(key: key);
@@ -48,6 +50,10 @@ class SendMoneyFormState extends State<SendMoneyForm> {
   // not a GlobalKey<MyCustomFormState>.
   final _formKey = GlobalKey<FormState>();
   late AjaxUser user = widget.user;
+  TextEditingController _recipientController = new TextEditingController();
+  TextEditingController _amountController = new TextEditingController();
+  TextEditingController _messageController = new TextEditingController();
+
 
 
   @override
@@ -62,6 +68,7 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           TextFormField(
+            controller: _recipientController,
             keyboardAppearance: Brightness.dark,
             // The validator receives the text that the user has entered.
             validator: (value) {
@@ -83,7 +90,11 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           TextFormField(
+            controller: _amountController,
             keyboardType: TextInputType.number,
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+            ],
             keyboardAppearance: Brightness.dark,
             // The validator receives the text that the user has entered.
             validator: (value) {
@@ -94,7 +105,7 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             },
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: "Enter Message",
+              labelText: "Enter Amount",
               fillColor: Colors.white,
               filled: true,
             ),
@@ -105,7 +116,8 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             style: Theme.of(context).textTheme.subtitle1,
           ),
           TextFormField(
-            keyboardType: TextInputType.number,
+            controller: _messageController,
+            keyboardType: TextInputType.text,
             keyboardAppearance: Brightness.dark,
             // The validator receives the text that the user has entered.
             validator: (value) {
@@ -128,9 +140,12 @@ class SendMoneyFormState extends State<SendMoneyForm> {
               if (_formKey.currentState!.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
                 // you'd often call a server or save the information in a database.
-                FirestoreService.instance.makePayment(user.uid, user.uid, 2);
+                String recipient = _recipientController.text;
+                num amount = double.parse(_amountController.text);
+                String message = _messageController.text;
+                FirestoreService.instance.makePayment(user.uid, user.uid, amount);
                 ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Processing Data')));
+                    .showSnackBar(SnackBar(content: Text('Sent Money')));
                 Navigator.pop(context);
 
               }
@@ -141,5 +156,13 @@ class SendMoneyFormState extends State<SendMoneyForm> {
         ],
       ),
     );
+  }
+
+  void dispose(){
+    _recipientController.dispose();
+    _amountController.dispose();
+    _messageController.dispose();
+    super.dispose();
+
   }
 }
