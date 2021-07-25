@@ -3,6 +3,7 @@ import 'package:ajax/services/firestore_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'dart:math' as math;
 
 class PaymentScreen extends StatefulWidget {
   PaymentScreen({Key? key, required this.user}) : super(key: key);
@@ -91,10 +92,8 @@ class SendMoneyFormState extends State<SendMoneyForm> {
           ),
           TextFormField(
             controller: _amountController,
-            keyboardType: TextInputType.number,
-            inputFormatters: <TextInputFormatter>[
-              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-            ],
+            inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
+            keyboardType: TextInputType.numberWithOptions(decimal: true),
             keyboardAppearance: Brightness.dark,
             // The validator receives the text that the user has entered.
             validator: (value) {
@@ -141,9 +140,10 @@ class SendMoneyFormState extends State<SendMoneyForm> {
                 // If the form is valid, display a snackbar. In the real world,
                 // you'd often call a server or save the information in a database.
                 String recipient = _recipientController.text;
+                recipient = "ZLoPba96Ao385vqnWmmy";
                 num amount = double.parse(_amountController.text);
                 String message = _messageController.text;
-                FirestoreService.instance.makePayment(user.uid, user.uid, amount);
+                FirestoreService.instance.makePayment(user.uid, recipient, amount, message);
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('Sent Money')));
                 Navigator.pop(context);
@@ -164,5 +164,46 @@ class SendMoneyFormState extends State<SendMoneyForm> {
     _messageController.dispose();
     super.dispose();
 
+  }
+}
+
+//copied directly from https://stackoverflow.com/questions/54454983/allow-only-two-decimal-number-in-flutter-input
+class DecimalTextInputFormatter extends TextInputFormatter {
+  DecimalTextInputFormatter({required this.decimalRange})
+      : assert(decimalRange == null || decimalRange > 0);
+
+  final int decimalRange;
+
+  @override
+  TextEditingValue formatEditUpdate(
+      TextEditingValue oldValue, // unused.
+      TextEditingValue newValue,
+      ) {
+    TextSelection newSelection = newValue.selection;
+    String truncated = newValue.text;
+
+    if (decimalRange != null) {
+      String value = newValue.text;
+
+      if (value.contains(".") &&
+          value.substring(value.indexOf(".") + 1).length > decimalRange) {
+        truncated = oldValue.text;
+        newSelection = oldValue.selection;
+      } else if (value == ".") {
+        truncated = "0.";
+
+        newSelection = newValue.selection.copyWith(
+          baseOffset: math.min(truncated.length, truncated.length + 1),
+          extentOffset: math.min(truncated.length, truncated.length + 1),
+        );
+      }
+
+      return TextEditingValue(
+        text: truncated,
+        selection: newSelection,
+        composing: TextRange.empty,
+      );
+    }
+    return newValue;
   }
 }

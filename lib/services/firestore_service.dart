@@ -8,10 +8,8 @@ class FirestoreService {
 
   //following three lines of code make this a singleton i believe
   FirestoreService._privateConstructor();
-
   static final FirestoreService _instance =
       FirestoreService._privateConstructor();
-
   static FirestoreService get instance => _instance;
 
   Future<AjaxUser> getUserByUid(uid) {
@@ -19,23 +17,23 @@ class FirestoreService {
     CollectionReference users = firestore.collection("User");
     return users.doc(uid).get().then((data) {
       print("got document");
-      dynamic userData = data.data();
-      print(userData);
-      AjaxUser user = AjaxUser(uid, userData["displayName"], userData["email"],
-          userData["balance"], userData["photoURL"]);
+      // dynamic userData = data.data();
+      // print(userData);
+      AjaxUser user = AjaxUser.fromSnapshot(data);
       return user;
     });
   }
 
   Future<void> makePayment(
-      String senderUid, String recipientUid, num amount) async {
+      String senderUid, String recipientUid, num amount, message) async {
     // Future<void> getFruit() async {
     HttpsCallable callable =
         FirebaseFunctions.instance.httpsCallable('makePayment');
     callable({
       "senderUid": senderUid,
       "recipientUid": recipientUid,
-      "amount": amount
+      "amount": amount,
+      "message": message,
     }).then((response){
       print(response.data);
     });
