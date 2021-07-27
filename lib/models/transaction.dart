@@ -1,13 +1,22 @@
 class AjaxTransaction{
   String _sender = "";
   String _recipient = "";
-  double _amount = 0;
+  num _amount = 0;
   String message = "";
   late DateTime timestamp;
 
 
   AjaxTransaction(this._sender, this._recipient, this._amount, this.message,
       this.timestamp);
+
+  AjaxTransaction.fromSnapshot(snapshot){
+    _sender = snapshot["senderUid"];
+    _recipient = snapshot["recipientUid"];
+    _amount = snapshot["amount"];
+    message = snapshot["message"];
+    timestamp = snapshot["timestamp"].toDate();
+
+  }
 
   static getDummyTransactions(){
     return [

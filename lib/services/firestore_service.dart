@@ -1,3 +1,4 @@
+import 'package:ajax/models/transaction.dart';
 import 'package:ajax/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +42,27 @@ class FirestoreService {
     //     results.data; // ["Apple", "Banana", "Cherry", "Date", "Fig", "Grapes"]
     // }
   }
+
+  Future<List<AjaxTransaction>> getPayments(String uid) async {
+    var sentTransactionSnapshots = await firestore.collection("Payment").where("senderUid",  isEqualTo: uid).orderBy("timestamp").get();
+    List<AjaxTransaction> sentTransactions = sentTransactionSnapshots.docs.map((snapshot) => AjaxTransaction.fromSnapshot(snapshot)).toList();
+    // print(sentTransactions[1].message);
+    var receivedTransactionSnapshots = await firestore.collection("Payment").where("recipientUid",  isEqualTo: uid).orderBy("timestamp").get();
+    List<AjaxTransaction> receivedTransactions = receivedTransactionSnapshots.docs.map((snapshot) => AjaxTransaction.fromSnapshot(snapshot)).toList();
+    //merge transactions here
+    // print(receivedTransactions[1].message);
+    print(receivedTransactions);
+
+
+    return sentTransactions + receivedTransactions;
+
+    print(sentTransactions);
+    // print(sentTransactions[0].data());
+    // return sentTransactions.map((snapshot) => AjaxTransaction.fromSnapshot(snapshot)).toList();
+    // print(sentPayments.docs);
+
+  }
+
 
 // Future<void> makePayment(String senderUid, String recipientUid, num amount){
 //   if(amount <= 0){

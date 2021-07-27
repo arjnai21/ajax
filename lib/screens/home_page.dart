@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
     // TODO: implement initState
     super.initState();
     _user = FirestoreService.instance.getUserByUid(widget.user.uid);
+    FirestoreService.instance.getPayments(widget.user.uid);
   }
 
   @override
