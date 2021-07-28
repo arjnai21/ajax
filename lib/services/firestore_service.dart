@@ -1,4 +1,4 @@
-import 'package:ajax/models/transaction.dart';
+import 'package:ajax/models/payment.dart';
 import 'package:ajax/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -43,12 +43,12 @@ class FirestoreService {
     // }
   }
 
-  Future<List<AjaxTransaction>> getPayments(String uid) async {
+  Future<List<Payment>> getPayments(String uid) async {
     var sentTransactionSnapshots = await firestore.collection("Payment").where("senderUid",  isEqualTo: uid).orderBy("timestamp").get();
-    List<AjaxTransaction> sentTransactions = sentTransactionSnapshots.docs.map((snapshot) => AjaxTransaction.fromSnapshot(snapshot)).toList();
+    List<Payment> sentTransactions = sentTransactionSnapshots.docs.map((snapshot) => Payment.fromSnapshot(snapshot)).toList();
     // print(sentTransactions[1].message);
     var receivedTransactionSnapshots = await firestore.collection("Payment").where("recipientUid",  isEqualTo: uid).orderBy("timestamp").get();
-    List<AjaxTransaction> receivedTransactions = receivedTransactionSnapshots.docs.map((snapshot) => AjaxTransaction.fromSnapshot(snapshot)).toList();
+    List<Payment> receivedTransactions = receivedTransactionSnapshots.docs.map((snapshot) => Payment.fromSnapshot(snapshot)).toList();
     //merge transactions here
     // print(receivedTransactions[1].message);
     print(receivedTransactions);

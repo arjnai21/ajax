@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/models/user.dart';
-import 'package:ajax/models/transaction.dart';
+import 'package:ajax/models/payment.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key, required this.user}) : super(key: key);
@@ -18,7 +18,7 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   int _counter = 0;
   late AjaxUser user = widget.user;
-  late List<AjaxTransaction> transactions;
+  late List<Payment> transactions;
   //     AjaxTransaction.getDummyTransactions();
 
   // configureListeners();
@@ -138,9 +138,9 @@ class _AccountPageState extends State<AccountPage> {
             child: FutureBuilder(
               future: FirestoreService.instance.getPayments(user.uid),
               builder: (BuildContext context,
-                  AsyncSnapshot<List<AjaxTransaction>> snapshot) {
+                  AsyncSnapshot<List<Payment>> snapshot) {
                 if (snapshot.hasData) {
-                  List<AjaxTransaction>? transactions = snapshot.data;
+                  List<Payment>? transactions = snapshot.data;
                   if(transactions!.isEmpty){
                     return Column(
                       children: [
@@ -204,7 +204,7 @@ class _AccountPageState extends State<AccountPage> {
                               builder: (context) => PaymentScreen(
                                     user: user,
                                   )),
-                        //  this empty setstate servers the purpose of regetting the user futurebuilder so the amount updates
+                        //  this empty setstate servers the purpose of resetting the user futurebuilder so the amount updates
                         ).then((value) => setState(()=> ""));
                       },
                       child: Text("Pay"),
