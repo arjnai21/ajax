@@ -26,13 +26,13 @@ class FirestoreService {
   }
 
   Future<void> makePayment(
-      String senderUid, String recipientUid, num amount, message) async {
+      String senderUid, String recipientEmail, num amount, message) async {
     // Future<void> getFruit() async {
     HttpsCallable callable =
         FirebaseFunctions.instance.httpsCallable('makePayment');
     callable({
       "senderUid": senderUid,
-      "recipientUid": recipientUid,
+      "recipientEmail": recipientEmail,
       "amount": amount,
       "message": message,
     }).then((response){

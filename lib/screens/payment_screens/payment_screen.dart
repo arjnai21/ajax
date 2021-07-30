@@ -141,7 +141,7 @@ class SendMoneyFormState extends State<SendMoneyForm> {
                 // you'd often call a server or save the information in a database.
                 String recipient = _recipientController.text;
                 // recipient = "ZLoPba96Ao385vqnWmmy";
-                recipient ="40xFwvy48LS5f7mrUOPjnRnaEu53";
+                recipient ="asnair499@gmail.com";
                 num amount = double.parse(_amountController.text);
                 String message = _messageController.text;
                 FirestoreService.instance.makePayment(user.uid, recipient, amount, message);

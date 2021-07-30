@@ -48,7 +48,8 @@ class _AppState extends State<App> {
       future: _initialization,
       builder: (context, snapshot){
         if(snapshot.hasError){
-          print("error");
+          print(snapshot.error);
+          print(snapshot.stackTrace.toString());
           throw("wasnt able to initialize firebase");
         }
 
@@ -81,11 +82,13 @@ class _AppState extends State<App> {
 }
 
 //TODO check if this works because the behavior is kinda questionable. i believe if the device as your google account on it it will
-// TODO automatically log you in
+// automatically log you in
 Widget _handleWindowDisplay() {
 
   User fireBaseUser = FirebaseAuth.instance.currentUser;
   if(fireBaseUser!=null){
+    FirebaseAuth.instance.signOut();
+    signOutGoogle();
     // AjaxUser user = FirestoreService.getUserByUid(user.uid);
     print(fireBaseUser.displayName);
     return HomePage(user: fireBaseUser);

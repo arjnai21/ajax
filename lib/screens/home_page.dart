@@ -54,8 +54,8 @@ class _HomePageState extends State<HomePage> {
         future: FirestoreService.instance.getUserByUid(widget.user.uid),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print("error");
-            throw ("wasnt able to initialize firebase");
+            print(snapshot.error);
+            throw("did not get user");
           } else if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {
             return AccountPage(user: snapshot.data!);
