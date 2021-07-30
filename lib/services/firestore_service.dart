@@ -13,6 +13,7 @@ class FirestoreService {
       FirestoreService._privateConstructor();
   static FirestoreService get instance => _instance;
 
+
   Future<AjaxUser> getUserByUid(uid) {
     print("getting user by uid");
     CollectionReference users = firestore.collection("User");

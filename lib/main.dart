@@ -2,6 +2,7 @@
 // ^ to avoid strange null safety issues that I don't really understand but should probably look into
 import 'package:ajax/models/user.dart';
 import 'package:ajax/screens/login.dart';
+import 'package:ajax/services/api.dart';
 import 'package:ajax/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -87,6 +88,8 @@ Widget _handleWindowDisplay() {
 
   User fireBaseUser = FirebaseAuth.instance.currentUser;
   if(fireBaseUser!=null){
+    getAjaxUser();
+
     // FirebaseAuth.instance.signOut();
     // signOutGoogle();
     // AjaxUser user = FirestoreService.getUserByUid(user.uid);

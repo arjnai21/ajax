@@ -1,4 +1,5 @@
 import 'package:ajax/screens/home_page.dart';
+import 'package:ajax/services/api.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:hello_world/myHomePage.dart';
@@ -26,10 +27,12 @@ class _BodyState extends State<Body> {
   }
 
   void click() {
-    signInWithGoogle().then((user) => {
-      this.user = user!,
+    signInWithGoogle().then((user)  {
+      // getUser();
+      this.user = user!;
       Navigator.push(context,
-          MaterialPageRoute(builder: (context) => HomePage(user: user,)))
+          MaterialPageRoute(builder: (context) => HomePage(user: user,)));
+
     });
 
   }

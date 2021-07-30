@@ -1,4 +1,5 @@
 import 'package:ajax/models/user.dart';
+import 'package:ajax/services/api.dart';
 import 'package:ajax/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       //   title: Text(widget.title),
       // ),
       body: FutureBuilder<AjaxUser>(
-        future: FirestoreService.instance.getUserByUid(widget.user.uid),
+        future: getAjaxUser(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             print(snapshot.error);
