@@ -1,4 +1,5 @@
 import 'package:ajax/models/user.dart';
+import 'package:ajax/services/api.dart';
 import 'package:ajax/services/firestore_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -141,10 +142,11 @@ class SendMoneyFormState extends State<SendMoneyForm> {
                 // you'd often call a server or save the information in a database.
                 String recipient = _recipientController.text;
                 // recipient = "ZLoPba96Ao385vqnWmmy";
-                recipient ="asnair499@gmail.com";
+                recipient = "3OOeXu36F7NInxTcUGQI7fsrbLd2";
                 num amount = double.parse(_amountController.text);
                 String message = _messageController.text;
-                FirestoreService.instance.makePayment(user.uid, recipient, amount, message);
+                // FirestoreService.instance.makePayment(user.uid, recipient, amount, message);
+                makePayment(recipient, amount, message);
                 ScaffoldMessenger.of(context)
                     .showSnackBar(SnackBar(content: Text('Sent Money')));
                 Navigator.pop(context);
