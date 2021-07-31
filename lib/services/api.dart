@@ -1,3 +1,4 @@
+import 'package:ajax/models/payment.dart';
 import 'package:ajax/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +19,14 @@ Future<bool> makePayment(String recipientId, num amount, String message) async{
     "amount": amount.toString(),
     "message": message,
   }).then((response) => response["success"]);
+}
+
+Future<List<Payment>> getPayments()async{
+  return callApi("getPayments", "get").then((response) {
+    var payments = response["payments"];
+    List<Payment> paymentsList = payments.map<Payment>((payment) => Payment.fromJson(payment)).toList();
+    return paymentsList;
+  });
 }
 
 Future<Map<String, dynamic>> callApi(String url, String method, {Map<String, dynamic> params = const {}}){

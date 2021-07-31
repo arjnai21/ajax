@@ -34,7 +34,7 @@ class _AccountPageState extends State<AccountPage> {
     // print("");
     // print("");
     // print("CALLING INITSTATE");
-    FirestoreService.instance.getPayments(user.uid);
+    getPayments().then((payments) => transactions = payments);
   }
 
   // void configureListeners() {
@@ -74,11 +74,16 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future<void> _updatePayments() {
-    return FirestoreService.instance.getPayments(user.uid).then((payments) {
+    return getPayments().then((value){
       setState(() {
-        transactions = payments;
+        transactions = value;
       });
     });
+    // return FirestoreService.instance.getPayments(user.uid).then((payments) {
+    //   setState(() {
+    //     transactions = payments;
+    //   });
+    // });
   }
 
   @override
@@ -142,7 +147,7 @@ class _AccountPageState extends State<AccountPage> {
                   // Padding(padding: EdgeInsets.all(5)),
                   Expanded(
                     child: FutureBuilder(
-                      future: FirestoreService.instance.getPayments(user.uid),
+                      future: getPayments(),
                       builder: (BuildContext context,
                           AsyncSnapshot<List<Payment>> snapshot) {
                         if (snapshot.hasData) {
