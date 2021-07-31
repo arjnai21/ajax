@@ -9,7 +9,7 @@ Future<AjaxUser> getAjaxUser()async{
   User? currentUser = FirebaseAuth.instance.currentUser;
   return currentUser!.getIdToken().then((token) async {
     var url = Uri.parse('https://us-central1-ajax-b5934.cloudfunctions.net/api/getUser');
-    var response = await http.post(url, body: {"uid": currentUser.uid},headers: {"Authorization": "Bearer " + token});
+    var response = await http.get(url, headers: {"Authorization": "Bearer " + token});
     print('Response status: ${response.statusCode}');
     print('Response body: ${response.body}');
     print(json.decode(response.body));
