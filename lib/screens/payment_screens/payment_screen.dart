@@ -16,8 +16,8 @@ class PaymentScreen extends StatefulWidget {
 }
 
 class _PaymentScreenState extends State<PaymentScreen> {
-
   late AjaxUser user = widget.user;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,7 +34,6 @@ class SendMoneyForm extends StatefulWidget {
   SendMoneyForm({Key? key, required this.user}) : super(key: key);
 
   final AjaxUser user;
-
 
   @override
   SendMoneyFormState createState() {
@@ -55,8 +54,6 @@ class SendMoneyFormState extends State<SendMoneyForm> {
   TextEditingController _recipientController = new TextEditingController();
   TextEditingController _amountController = new TextEditingController();
   TextEditingController _messageController = new TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -146,11 +143,16 @@ class SendMoneyFormState extends State<SendMoneyForm> {
                 num amount = double.parse(_amountController.text);
                 String message = _messageController.text;
                 // FirestoreService.instance.makePayment(user.uid, recipient, amount, message);
-                makePayment(recipient, amount, message);
-                ScaffoldMessenger.of(context)
-                    .showSnackBar(SnackBar(content: Text('Sent Money')));
-                Navigator.pop(context);
-
+                makePayment(recipient, amount, message).then((success) {
+                  if (success) {
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(SnackBar(content: Text('Sent Money')));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text('Payment failed! Please try again')));
+                  }
+                  Navigator.pop(context);
+                });
               }
             },
             child: Text('Submit'),
@@ -161,12 +163,11 @@ class SendMoneyFormState extends State<SendMoneyForm> {
     );
   }
 
-  void dispose(){
+  void dispose() {
     _recipientController.dispose();
     _amountController.dispose();
     _messageController.dispose();
     super.dispose();
-
   }
 }
 
@@ -179,9 +180,9 @@ class DecimalTextInputFormatter extends TextInputFormatter {
 
   @override
   TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, // unused.
-      TextEditingValue newValue,
-      ) {
+    TextEditingValue oldValue, // unused.
+    TextEditingValue newValue,
+  ) {
     TextSelection newSelection = newValue.selection;
     String truncated = newValue.text;
 

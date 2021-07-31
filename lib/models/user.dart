@@ -24,6 +24,7 @@ class AjaxUser {
     pfpUrl = userJson["photoURL"];
   }
   AjaxUser.fromJson(Map<String, dynamic> json){
+
     // AjaxUser(uid, userData["displayName"], userData["email"], userData["balance"], userData["photoURL"])
     // dynamic userJson = snapshot.data();
     uid = json["uid"];
@@ -31,7 +32,10 @@ class AjaxUser {
     emailAddress = json["email"];
     balance = json["balance"];
     pfpUrl = json["photo_url"];
+    print("GOT USER FROM API");
+    print(json);
   }
+
 
 
 
