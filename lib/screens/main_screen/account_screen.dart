@@ -17,7 +17,7 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   int _counter = 0;
-  late AjaxUser user = widget.user;
+  // late AjaxUser user;
   late List<Payment> transactions;
 
   //     AjaxTransaction.getDummyTransactions();
@@ -34,7 +34,7 @@ class _AccountPageState extends State<AccountPage> {
     // print("");
     // print("");
     // print("CALLING INITSTATE");
-    getPayments().then((payments) => transactions = payments);
+    // getPayments().then((payments) => transactions = payments);
   }
 
   // void configureListeners() {
@@ -59,31 +59,34 @@ class _AccountPageState extends State<AccountPage> {
   //   });
   // }
 
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
+
+
+  // Future<void> _updatePayments() {
+  //   return getPayments().then((value){
+  //     setState(() {
+  //       transactions = value;
+  //     });
+  //   });
+  //   // return FirestoreService.instance.getPayments(user.uid).then((payments) {
+  //   //   setState(() {
+  //   //     transactions = payments;
+  //   //   });
+  //   // });
+  // }
+
+  Future<void> initTransactions(){
+    return getPayments().then((payments) {
+      print("INIT TRANSACTIONS RESOLVED");
+      transactions = payments;
     });
   }
 
-  void _getUser() {
-    FirestoreService.instance.getUserByUid(user.uid).then((newUser) {
+  Future<void> refreshTransactions(){
+    return getPayments().then((payments) {
       setState(() {
-        user = newUser;
+        transactions = payments;
       });
     });
-  }
-
-  Future<void> _updatePayments() {
-    return getPayments().then((value){
-      setState(() {
-        transactions = value;
-      });
-    });
-    // return FirestoreService.instance.getPayments(user.uid).then((payments) {
-    //   setState(() {
-    //     transactions = payments;
-    //   });
-    // });
   }
 
   @override
@@ -93,7 +96,7 @@ class _AccountPageState extends State<AccountPage> {
           future: getAjaxUser(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              user = snapshot.data!;
+              AjaxUser user = snapshot.data!;
               return Column(
                 // mainAxisAlignment: MainAxisAlignment.spaceA,
                 // crossAxisAlignment: CrossAxisAlignment.center,
@@ -146,13 +149,13 @@ class _AccountPageState extends State<AccountPage> {
 
                   // Padding(padding: EdgeInsets.all(5)),
                   Expanded(
-                    child: FutureBuilder(
-                      future: getPayments(),
+                    child: FutureBuilder<void>(
+                      future: initTransactions(),
                       builder: (BuildContext context,
-                          AsyncSnapshot<List<Payment>> snapshot) {
-                        if (snapshot.hasData) {
-                          List<Payment>? transactions = snapshot.data;
-                          if (transactions!.isEmpty) {
+                          AsyncSnapshot<void> snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          // List<Payment>? transactions = snapshot.data;
+                          if (transactions.isEmpty) {
                             return Column(
                               children: [
                                 Text(
@@ -161,7 +164,9 @@ class _AccountPageState extends State<AccountPage> {
                                 ),
                                 ElevatedButton(
                                   onPressed: () {
-                                    _updatePayments();
+                                    setState(() {
+                                      print("refreshing futures basically");
+                                    });
                                   },
                                   child: Text("Refresh"),
                                   style: ElevatedButton.styleFrom(
@@ -176,7 +181,7 @@ class _AccountPageState extends State<AccountPage> {
                             );
                           }
                           return RefreshIndicator(
-                            onRefresh: _updatePayments,
+                            onRefresh: refreshTransactions,
                             child: ListView.builder(
                               itemCount: transactions.length,
                               itemBuilder: (BuildContext context, int index) {

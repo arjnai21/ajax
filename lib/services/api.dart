@@ -25,6 +25,7 @@ Future<List<Payment>> getPayments()async{
   return callApi("getPayments", "get").then((response) {
     var payments = response["payments"];
     List<Payment> paymentsList = payments.map<Payment>((payment) => Payment.fromJson(payment)).toList();
+    print(paymentsList);
     return paymentsList;
   });
 }
