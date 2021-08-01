@@ -21,7 +21,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: new AppBar(
-        title: Text("hello"),
+        title: Text("Make a payment"),
       ),
       body: SendMoneyForm(user: user),
     );
@@ -89,7 +89,9 @@ class SendMoneyFormState extends State<SendMoneyForm> {
           ),
           TextFormField(
             controller: _amountController,
-            inputFormatters: [DecimalTextInputFormatter(decimalRange: 2)],
+            inputFormatters: <TextInputFormatter>[
+              FilteringTextInputFormatter.allow(RegExp(r'[0-9]|\.')),
+            ],
             keyboardType: TextInputType.numberWithOptions(decimal: true),
             keyboardAppearance: Brightness.dark,
             // The validator receives the text that the user has entered.
@@ -166,46 +168,5 @@ class SendMoneyFormState extends State<SendMoneyForm> {
     _amountController.dispose();
     _messageController.dispose();
     super.dispose();
-  }
-}
-
-//copied directly from https://stackoverflow.com/questions/54454983/allow-only-two-decimal-number-in-flutter-input
-class DecimalTextInputFormatter extends TextInputFormatter {
-  DecimalTextInputFormatter({required this.decimalRange})
-      : assert(decimalRange == null || decimalRange > 0);
-
-  final int decimalRange;
-
-  @override
-  TextEditingValue formatEditUpdate(
-    TextEditingValue oldValue, // unused.
-    TextEditingValue newValue,
-  ) {
-    TextSelection newSelection = newValue.selection;
-    String truncated = newValue.text;
-
-    if (decimalRange != null) {
-      String value = newValue.text;
-
-      if (value.contains(".") &&
-          value.substring(value.indexOf(".") + 1).length > decimalRange) {
-        truncated = oldValue.text;
-        newSelection = oldValue.selection;
-      } else if (value == ".") {
-        truncated = "0.";
-
-        newSelection = newValue.selection.copyWith(
-          baseOffset: math.min(truncated.length, truncated.length + 1),
-          extentOffset: math.min(truncated.length, truncated.length + 1),
-        );
-      }
-
-      return TextEditingValue(
-        text: truncated,
-        selection: newSelection,
-        composing: TextRange.empty,
-      );
-    }
-    return newValue;
   }
 }
