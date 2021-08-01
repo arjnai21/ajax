@@ -1,14 +1,11 @@
 // @dart=2.9
 // ^ to avoid strange null safety issues that I don't really understand but should probably look into
-import 'package:ajax/models/user.dart';
 import 'package:ajax/screens/login.dart';
-import 'package:ajax/services/api.dart';
+import 'package:ajax/screens/main_screen/account_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:ajax/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-import 'services/auth.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,12 +83,11 @@ Widget _handleWindowDisplay() {
 
   User fireBaseUser = FirebaseAuth.instance.currentUser;
   if(fireBaseUser!=null){
-    getAjaxUser();
 
     // FirebaseAuth.instance.signOut();
     // signOutGoogle();
     // AjaxUser user = FirestoreService.getUserByUid(user.uid);
-    return HomePage(user: fireBaseUser);
+    return AccountPage();
   }
   return LoginPage();
   // return FutureBuilder(
