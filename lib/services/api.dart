@@ -25,13 +25,11 @@ Future<List<Payment>> getPayments()async{
   return callApi("getPayments", "get").then((response) {
     var payments = response["payments"];
     List<Payment> paymentsList = payments.map<Payment>((payment) => Payment.fromJson(payment)).toList();
-    print(paymentsList);
     return paymentsList;
   });
 }
 
 Future<Map<String, dynamic>> callApi(String url, String method, {Map<String, dynamic> params = const {}}){
-  print(params);
   method = method.toLowerCase();
   User? currentUser = FirebaseAuth.instance.currentUser;
   return currentUser!.getIdToken().then((token) async {

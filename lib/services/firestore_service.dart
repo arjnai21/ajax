@@ -15,10 +15,8 @@ class FirestoreService {
 
 
   Future<AjaxUser> getUserByUid(uid) {
-    print("getting user by uid");
     CollectionReference users = firestore.collection("User");
     return users.doc(uid).get().then((data) {
-      print("got document");
       // dynamic userData = data.data();
       // print(userData);
       AjaxUser user = AjaxUser.fromSnapshot(data);
@@ -52,12 +50,10 @@ class FirestoreService {
     List<Payment> receivedTransactions = receivedTransactionSnapshots.docs.map((snapshot) => Payment.fromSnapshot(snapshot)).toList();
     //merge transactions here
     // print(receivedTransactions[1].message);
-    print(receivedTransactions);
 
 
     return sentTransactions + receivedTransactions;
 
-    print(sentTransactions);
     // print(sentTransactions[0].data());
     // return sentTransactions.map((snapshot) => AjaxTransaction.fromSnapshot(snapshot)).toList();
     // print(sentPayments.docs);

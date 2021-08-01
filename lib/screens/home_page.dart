@@ -55,7 +55,6 @@ class _HomePageState extends State<HomePage> {
         future: getAjaxUser(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
-            print(snapshot.error);
             throw("did not get user");
           } else if (snapshot.connectionState == ConnectionState.done &&
               snapshot.hasData) {

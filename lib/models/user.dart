@@ -32,8 +32,6 @@ class AjaxUser {
     emailAddress = json["email"];
     balance = json["balance"];
     pfpUrl = json["photo_url"];
-    print("GOT USER FROM API");
-    print(json);
   }
 
 

@@ -76,7 +76,6 @@ class _AccountPageState extends State<AccountPage> {
 
   Future<void> initTransactions(){
     return getPayments().then((payments) {
-      print("INIT TRANSACTIONS RESOLVED");
       transactions = payments;
     });
   }
@@ -165,7 +164,6 @@ class _AccountPageState extends State<AccountPage> {
                                 ElevatedButton(
                                   onPressed: () {
                                     setState(() {
-                                      print("refreshing futures basically");
                                     });
                                   },
                                   child: Text("Refresh"),
@@ -219,7 +217,6 @@ class _AccountPageState extends State<AccountPage> {
                             // width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () {
-                                print("button pressed");
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -228,7 +225,6 @@ class _AccountPageState extends State<AccountPage> {
                                           )),
                                   //  this empty setstate servers the purpose of resetting the user futurebuilder so the amount updates
                                 ).then((value) => setState(() {
-                                      print("SETTING STATE ON PAGE RETURN");
                                     }));
                               },
                               child: Text("Pay"),

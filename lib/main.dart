@@ -93,7 +93,6 @@ Widget _handleWindowDisplay() {
     // FirebaseAuth.instance.signOut();
     // signOutGoogle();
     // AjaxUser user = FirestoreService.getUserByUid(user.uid);
-    print(fireBaseUser.displayName);
     return HomePage(user: fireBaseUser);
   }
   return LoginPage();
