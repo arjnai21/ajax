@@ -1,7 +1,6 @@
 import 'package:ajax/models/payment.dart';
 import 'package:ajax/models/user.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -41,10 +40,6 @@ Future<Map<String, dynamic>> callApi(String url, String method, {Map<String, dyn
     else if(method == "post"){
       response = await http.post(uri, headers: {"Authorization": "Bearer " + token}, body: params );
     }
-    // print('Response status: ${response.statusCode}');
-    // print('Response body: ${response.body}');
-    // print(json.decode(response.body));
-    // print(json.decode(response.body)["display_name"]);
     return json.decode(response.body);
   });
 }

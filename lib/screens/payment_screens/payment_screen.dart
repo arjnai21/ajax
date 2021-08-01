@@ -3,7 +3,6 @@ import 'package:ajax/services/api.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'dart:math' as math;
 
 class PaymentScreen extends StatefulWidget {
   PaymentScreen({Key? key, required this.user}) : super(key: key);
@@ -97,7 +96,13 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             // The validator receives the text that the user has entered.
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Please enter amount';
+                return "Please enter amount";
+              }
+              else{
+                RegExp moneyRegex = new RegExp("^[0-9]+(\.[0-9]{1,2})?");
+                if(!moneyRegex.hasMatch(value)){
+                  return "Please enter valid monetary value";
+                }
               }
               return null;
             },
