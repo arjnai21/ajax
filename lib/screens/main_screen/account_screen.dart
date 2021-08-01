@@ -2,7 +2,6 @@ import 'package:ajax/models/payment.dart';
 import 'package:ajax/models/user.dart';
 import 'package:ajax/screens/payment_screens/payment_screen.dart';
 import 'package:ajax/services/api.dart';
-import 'package:ajax/services/firestore_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -16,63 +15,9 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  int _counter = 0;
-  // late AjaxUser user;
   late List<Payment> transactions;
 
-  //     AjaxTransaction.getDummyTransactions();
 
-  // configureListeners();
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    // user = widget.user;
-    // configureListeners();
-    // print("");
-    // print("");
-    // print("");
-    // print("CALLING INITSTATE");
-    // getPayments().then((payments) => transactions = payments);
-  }
-
-  // void configureListeners() {
-  //   //  firestore user listener
-  //   FirebaseFirestore.instance
-  //       .collection("User")
-  //       .doc(user.uid)
-  //       .snapshots()
-  //       .listen((DocumentSnapshot snapshot) {
-  //     print("document changed");
-  //     // TODO investigate these shenanigans
-  //     if (this.mounted) {
-  //       setState(() {
-  //         // print("trying to set the state");
-  //         // print(snapshot);
-  //
-  //         user = AjaxUser.fromSnapshot(snapshot);
-  //       });
-  //     } else {
-  //       // print("document changed but component not mounted");
-  //     }
-  //   });
-  // }
-
-
-
-  // Future<void> _updatePayments() {
-  //   return getPayments().then((value){
-  //     setState(() {
-  //       transactions = value;
-  //     });
-  //   });
-  //   // return FirestoreService.instance.getPayments(user.uid).then((payments) {
-  //   //   setState(() {
-  //   //     transactions = payments;
-  //   //   });
-  //   // });
-  // }
 
   Future<void> initTransactions(){
     return getPayments().then((payments) {
@@ -250,33 +195,3 @@ class _AccountPageState extends State<AccountPage> {
   }
 }
 
-// Expanded(
-// child: FutureBuilder(
-// future: FirestoreService.instance.getPayments(user.uid),
-// builder: (BuildContext context,
-//     AsyncSnapshot<List<AjaxTransaction>> snapshot) {
-// if (snapshot.hasData) {
-// List<AjaxTransaction>? transactions = snapshot.data;
-// return RefreshIndicator(
-// onRefresh: () => FirestoreService.instance.getPayments(user.uid),
-// child: ListView.builder(
-// itemCount: transactions!.length,
-// itemBuilder: (BuildContext context, int index) {
-// return InkWell(
-// child: Card(
-// color: Theme.of(context).accentColor,
-// child: Text(
-// transactions[index].message,
-// style: Theme.of(context).textTheme.subtitle1,
-// ),
-// ),
-// );
-// },
-// ),
-// );
-// } else {
-// return CircularProgressIndicator();
-// }
-// },
-// ),
-// ),

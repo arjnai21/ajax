@@ -1,6 +1,5 @@
 import 'package:ajax/models/user.dart';
 import 'package:ajax/services/api.dart';
-import 'package:ajax/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/screens/main_screen/account_screen.dart';
@@ -27,14 +26,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late Future<AjaxUser> _user;
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _user = FirestoreService.instance.getUserByUid(widget.user.uid);
-    FirestoreService.instance.getPayments(widget.user.uid);
+
   }
 
   @override

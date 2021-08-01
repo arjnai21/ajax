@@ -3,12 +3,10 @@
 import 'package:ajax/models/user.dart';
 import 'package:ajax/screens/login.dart';
 import 'package:ajax/services/api.dart';
-import 'package:ajax/services/firestore_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:ajax/screens/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'services/firestore_service.dart';
 
 import 'services/auth.dart';
 
