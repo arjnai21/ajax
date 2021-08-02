@@ -10,11 +10,11 @@ Future<AjaxUser> getAjaxUser()async{
   return callApi("getUser", "get").then((user) => AjaxUser.fromJson(user));
 }
 
-Future<bool> makePayment(String recipientId, num amount, String message) async{
+Future<bool> makePayment(String recipientEmail, num amount, String message) async{
   String senderId = FirebaseAuth.instance.currentUser!.uid;
   return callApi("makePayment", "post", params: {
     "senderId": senderId,
-    "recipientId": recipientId,
+    "recipientEmail": recipientEmail,
     "amount": amount.toString(),
     "message": message,
   }).then((response) => response["success"]);

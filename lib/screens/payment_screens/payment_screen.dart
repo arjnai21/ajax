@@ -76,7 +76,7 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             },
             decoration: InputDecoration(
               border: OutlineInputBorder(),
-              labelText: "Enter Recipient",
+              labelText: "Enter Recipient Email",
               fillColor: Colors.white,
               filled: true,
             ),
@@ -143,12 +143,12 @@ class SendMoneyFormState extends State<SendMoneyForm> {
               if (_formKey.currentState!.validate()) {
                 // If the form is valid, display a snackbar. In the real world,
                 // you'd often call a server or save the information in a database.
-                String recipient = _recipientController.text;
+                String recipientEmail = _recipientController.text;
                 // recipient = "ZLoPba96Ao385vqnWmmy";
-                recipient = "3OOeXu36F7NInxTcUGQI7fsrbLd2";
+                recipientEmail = "fake@fake.com";
                 num amount = double.parse(_amountController.text);
                 String message = _messageController.text;
-                makePayment(recipient, amount, message).then((success) {
+                makePayment(recipientEmail, amount, message).then((success) {
                   if (success) {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text('Sent Money')));
