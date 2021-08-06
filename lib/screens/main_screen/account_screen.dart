@@ -84,11 +84,13 @@ class _AccountPageState extends State<AccountPage> {
       ),
       body: Center(
         child: FutureBuilder<AjaxUser>(
+            //TODO properly handle lack of internet and double refreshing of transactions
             future: getAjaxUser(),
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 AjaxUser user = snapshot.data!;
-                print("snapshot has data and is building");
+                print("snapshot has data and is building ");
+                print(snapshot.data);
                 return Stack(
                   children: [
                     Center(
@@ -269,8 +271,14 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                   ],
                 );
-              } else {
+              }
+              else if(snapshot.connectionState == ConnectionState.waiting){
                 return CircularProgressIndicator();
+
+              }
+              else {
+                return Center(child: Text("Unable to get transactions. Please check internet connection", style: Theme.of(context).textTheme.subtitle1,),);
+                throw Exception("Unable to get transactions. Check internet connection.");
               }
             }),
       ),
