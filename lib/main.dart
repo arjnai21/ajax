@@ -70,6 +70,9 @@ class _AppState extends State<App> {
                   print("There is a user logged in");
                   return AccountPage();
                 }
+                else if(snapshot.connectionState == ConnectionState.waiting){
+                  return CircularProgressIndicator();
+                }
                 else {
                   return LoginPage();
                 }
