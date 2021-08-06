@@ -8,7 +8,7 @@ import '../services/auth.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(appBar: AppBar(title: Text('Hello World!')), body: Body());
+    return Scaffold(appBar: AppBar(title: Text('Sign in to ajax')), body: Body());
   }
 }
 

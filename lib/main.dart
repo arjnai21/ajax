@@ -2,7 +2,7 @@
 // ^ to avoid strange null safety issues that I don't really understand but should probably look into
 import 'package:ajax/screens/login.dart';
 import 'package:ajax/screens/main_screen/account_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -63,7 +63,18 @@ class _AppState extends State<App> {
                   subtitle1: TextStyle(color: Colors.white, fontFamily: "Roboto"),
                 )
             ),
-            home: _handleWindowDisplay(),
+            home: StreamBuilder<auth.User>(
+              stream: auth.FirebaseAuth.instance.authStateChanges(),
+              builder: (BuildContext context, AsyncSnapshot<auth.User> snapshot) {
+                if(snapshot.hasData) {
+                  print("There is a user logged in");
+                  return AccountPage();
+                }
+                else {
+                  return LoginPage();
+                }
+              },
+            ),
             debugShowCheckedModeBanner: false,
 
           );
@@ -81,14 +92,14 @@ class _AppState extends State<App> {
 // automatically log you in
 Widget _handleWindowDisplay() {
 
-  User fireBaseUser = FirebaseAuth.instance.currentUser;
-  if(fireBaseUser!=null){
+  // User fireBaseUser = FirebaseAuth.instance.currentUser;
+  // if(fireBaseUser!=null){
 
     // FirebaseAuth.instance.signOut();
     // signOutGoogle();
     // AjaxUser user = FirestoreService.getUserByUid(user.uid);
-    return AccountPage();
-  }
+    // return AccountPage();
+  // }
   return LoginPage();
   // return FutureBuilder(
   //   future: FirebaseAuth.instance.currentUser,
