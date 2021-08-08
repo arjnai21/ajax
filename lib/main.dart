@@ -67,7 +67,6 @@ class _AppState extends State<App> {
               stream: auth.FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<auth.User> snapshot) {
                 if(snapshot.hasData) {
-                  print("There is a user logged in");
                   return AccountPage();
                 }
                 else if(snapshot.connectionState == ConnectionState.waiting){

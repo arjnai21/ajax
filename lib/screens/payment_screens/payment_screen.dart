@@ -97,10 +97,9 @@ class SendMoneyFormState extends State<SendMoneyForm> {
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Please enter amount";
-              }
-              else{
+              } else {
                 RegExp moneyRegex = new RegExp("^[0-9]+(\.[0-9]{1,2})?");
-                if(!moneyRegex.hasMatch(value)){
+                if (!moneyRegex.hasMatch(value)) {
                   return "Please enter valid monetary value";
                 }
               }
@@ -148,15 +147,22 @@ class SendMoneyFormState extends State<SendMoneyForm> {
                 recipientEmail = "fake@fake.com";
                 num amount = double.parse(_amountController.text);
                 String message = _messageController.text;
-                makePayment(recipientEmail, amount, message).then((success) {
-                  if (success) {
+                makePayment(recipientEmail, amount, message)
+                    .then((responseMessage) {
+                  if (responseMessage == "SUCCESS") {
                     ScaffoldMessenger.of(context)
                         .showSnackBar(SnackBar(content: Text('Sent Money')));
-                  } else {
+                    Navigator.pop(context);
+                  } else if (responseMessage == "INSUFFICIENT_FUNDS") {
                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                        content: Text('Payment failed! Please try again')));
+                        content: Text(
+                            'You do not have enough money to make this transaction.')));
                   }
-                  Navigator.pop(context);
+                  else if(responseMessage == "INVALID_AMOUNT"){
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        content: Text(
+                            'Please enter a valid amount')));
+                  }
                 });
               }
             },

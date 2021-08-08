@@ -89,8 +89,6 @@ class _AccountPageState extends State<AccountPage> {
             builder: (context, snapshot) {
               if (snapshot.hasData) {
                 AjaxUser user = snapshot.data!;
-                print("snapshot has data and is building ");
-                print(snapshot.data);
                 return Stack(
                   children: [
                     Center(
