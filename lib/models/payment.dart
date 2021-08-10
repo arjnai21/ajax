@@ -10,8 +10,8 @@ class Payment{
       this.timestamp);
 
   Payment.fromJson(Map<String, dynamic> json){
-    sender = json["sender_id"];
-    recipient = json["recipient_id"];
+    sender = json["sender_email"];
+    recipient = json["recipient_email"];
     amount = json["amount"];
     message = json["message"];
     timestamp = DateTime.parse(json["timestamp"]).toLocal();
