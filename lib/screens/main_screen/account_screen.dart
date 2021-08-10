@@ -190,7 +190,7 @@ class _AccountPageState extends State<AccountPage> {
                                             color:
                                                 Theme.of(context).accentColor,
                                             child: Text(
-                                              "Sender: ${transactions[index].sender}\nRecipient: ${transactions[index].recipient}\nAmount: \$${transactions[index].amount}\nMessage: ${transactions[index].message}\nTimestamp: ${transactions[index].timestamp}",
+                                              "Sender: ${transactions[index].sender}\nRecipient: ${transactions[index].recipient}\nAmount: \$${transactions[index].amount.toStringAsFixed(2)}\nMessage: ${transactions[index].message}\nTimestamp: ${transactions[index].timestamp}",
                                               style: Theme.of(context)
                                                   .textTheme
                                                   .subtitle1,
