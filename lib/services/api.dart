@@ -9,6 +9,10 @@ Future<AjaxUser> getAjaxUser() async {
   return callApi("getUser", "get").then((user) => AjaxUser.fromJson(user));
 }
 
+Future<String> getPlaidLinkToken() async {
+  return callApi("getPlaidLinkToken", "get").then((response) => response["link_token"]);
+}
+
 Future<String> makePayment(
     String recipientEmail, num amount, String message) async {
   String senderId = FirebaseAuth.instance.currentUser!.uid;
