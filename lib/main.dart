@@ -5,12 +5,16 @@ import 'package:ajax/screens/main_screen/account_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// testing out github codespaces
-void main() {
+bool firstTime;
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  await prefs.setBool("firstTime", false);
+  firstTime = prefs.getBool("firstTime");
+  print('firstTime: $firstTime');
   runApp(App());
 }
 
@@ -67,7 +71,14 @@ class _AppState extends State<App> {
               stream: auth.FirebaseAuth.instance.authStateChanges(),
               builder: (BuildContext context, AsyncSnapshot<auth.User> snapshot) {
                 if(snapshot.hasData) {
-                  return AccountPage();
+                  if(firstTime){
+                    print("IT IS THIS USERS FIRST TIME");
+                    return CircularProgressIndicator();
+                  }
+                  else{
+                    return AccountPage();
+
+                  }
                 }
                 else if(snapshot.connectionState == ConnectionState.waiting){
                   return CircularProgressIndicator();
