@@ -2,6 +2,7 @@
 // ^ to avoid strange null safety issues that I don't really understand but should probably look into
 import 'package:ajax/screens/login.dart';
 import 'package:ajax/screens/main_screen/account_screen.dart';
+import 'package:ajax/screens/onboarding/plaid_onboard.dart';
 import 'package:firebase_auth/firebase_auth.dart' as auth;
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -12,7 +13,7 @@ bool firstTime;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  await prefs.setBool("firstTime", false);
+  await prefs.setBool("firstTime", true);
   firstTime = prefs.getBool("firstTime");
   print('firstTime: $firstTime');
   runApp(App());
@@ -73,7 +74,7 @@ class _AppState extends State<App> {
                 if(snapshot.hasData) {
                   if(firstTime){
                     print("IT IS THIS USERS FIRST TIME");
-                    return CircularProgressIndicator();
+                    return PlaidOnboard();
                   }
                   else{
                     return AccountPage();
