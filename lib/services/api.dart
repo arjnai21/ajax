@@ -12,6 +12,11 @@ Future<AjaxUser> getAjaxUser() async {
 Future<String> getPlaidLinkToken() async {
   return callApi("getPlaidLinkToken", "get").then((response) => response["link_token"]);
 }
+Future<bool> exchangePublicToken(String publicToken) async {
+  return callApi("exchangePublicToken", "post", params: {
+    "publicToken": publicToken
+  }).then((response) => response["success"]);
+}
 
 Future<String> makePayment(
     String recipientEmail, num amount, String message) async {

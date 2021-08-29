@@ -20,6 +20,8 @@ class _PlaidOnboardState extends State<PlaidOnboard> {
 
   void configurePlaidLink() async{
     String token =  await getPlaidLinkToken();
+    print("PRINTING TOKEN");
+    print(token);
     LinkConfiguration configuration = LinkTokenConfiguration(
       token: token,
     );
