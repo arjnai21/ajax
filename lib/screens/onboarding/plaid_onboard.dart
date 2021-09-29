@@ -37,6 +37,7 @@ class _PlaidOnboardState extends State<PlaidOnboard> {
   }
 
   void _onSuccessCallback(String publicToken, LinkSuccessMetadata metadata) {
+    exchangePublicToken(publicToken);
     print("onSuccess: $publicToken, metadata: ${metadata.description()}");
   }
 
