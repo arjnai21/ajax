@@ -38,6 +38,8 @@ class _PlaidOnboardState extends State<PlaidOnboard> {
 
   void _onSuccessCallback(String publicToken, LinkSuccessMetadata metadata) {
     exchangePublicToken(publicToken);
+    // TODO figure out how to get to the next screen
+    // TODO probably just Navigator the jaunt but we'll see what happens
     print("onSuccess: $publicToken, metadata: ${metadata.description()}");
   }
 
